@@ -65,7 +65,7 @@ def collect_metrics(conn, keys):
         parsed = parse_key(key)
         metric = key_to_metric(parsed)
 
-        if metric['type'].value is not MetricType.STRING.value:
+        if metric is not None and metric['type'].value is not MetricType.STRING.value:
             val = collect_metric(conn, metric['type'], key)
             if 'parser' in metric:
                 val = metric['parser'](val)

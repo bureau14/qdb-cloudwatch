@@ -104,6 +104,21 @@ METRICS = {'cpu.idle': {'type': MetricType.COUNTER,
            'perf.common.get_metadata.processing.total_ns': {'type': MetricType.COUNTER,
                                                             'unit': 'Microseconds',
                                                             'parser': nanos_to_micros},
+           'perf.common.get_range.deserialization.total_ns': {'type': MetricType.COUNTER,
+                                                              'unit': 'Microseconds',
+                                                              'parser': nanos_to_micros},
+           'perf.common.get_range.processing.total_ns': {'type': MetricType.COUNTER,
+                                                         'unit': 'Microseconds',
+                                                         'parser': nanos_to_micros},
+           'perf.common.get_versions.content_reading.total_ns': {'type': MetricType.COUNTER,
+                                                                 'unit': 'Microseconds',
+                                                                 'parser': nanos_to_micros},
+           'perf.common.get_versions.deserialization.total_ns': {'type': MetricType.COUNTER,
+                                                                 'unit': 'Microseconds',
+                                                                 'parser': nanos_to_micros},
+           'perf.common.get_versions.processing.total_ns': {'type': MetricType.COUNTER,
+                                                            'unit': 'Microseconds',
+                                                            'parser': nanos_to_micros},
            'perf.common.set_transaction_state.content_reading.total_ns': {'type': MetricType.COUNTER,
                                                                           'unit': 'Microseconds',
                                                                           'parser': nanos_to_micros},
@@ -123,6 +138,12 @@ METRICS = {'cpu.idle': {'type': MetricType.COUNTER,
                                                             'unit': 'Microseconds',
                                                             'parser': nanos_to_micros},
            'perf.control.system.processing.total_ns': {'type': MetricType.COUNTER,
+                                                       'unit': 'Microseconds',
+                                                       'parser': nanos_to_micros},
+           'perf.control.status.deserialization.total_ns': {'type': MetricType.COUNTER,
+                                                            'unit': 'Microseconds',
+                                                            'parser': nanos_to_micros},
+           'perf.control.status.processing.total_ns': {'type': MetricType.COUNTER,
                                                        'unit': 'Microseconds',
                                                        'parser': nanos_to_micros},
            'perf.integer.update.content_writing.total_ns': {'type': MetricType.COUNTER,
@@ -327,4 +348,7 @@ METRICS = {'cpu.idle': {'type': MetricType.COUNTER,
                        'unit': 'None'}}
 
 def key_to_metric(x):
-    return METRICS[x]
+    try:
+        return METRICS[x]
+    except KeyError:
+        print("unrecognized key: ", x)
