@@ -35,13 +35,21 @@ def get_args():
         dest='instance_id',
         help='EC2 instance id to add to the dimensions. By default tries to look up from AWS instance metadata.')
 
+    parser.add_argument(
+        '--region',
+        dest='region_name',
+        help='AWS region to export metrics in. Defaults to $AWS_DEFAULT_REGION.')
+
     return parser.parse_args()
 
 def get_qdb_conn(uri):
     return quasardb.Cluster(uri)
 
-def get_boto_client():
-    return boto3.client('cloudwatch')
+def get_boto_client(region_name=None):
+    if region_name is not None:
+        return boto3.client('cloudwatch', region_name=region_name)
+    else:
+        return boto3.client('cloudwatch')
 
 def parse_key(key):
     return key.split('.', 3)[-1]
@@ -111,6 +119,6 @@ def main():
     keys = collect_keys(conn, args.node_id)
     metrics = collect_metrics(conn, keys)
 
-    result = put_metrics(get_boto_client(), args.namespace, metrics, args.instance_id)
+    result = put_metrics(get_boto_client(args.region_name), args.namespace, metrics, args.instance_id)
 
     print("result = ", result)
